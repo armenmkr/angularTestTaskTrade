@@ -1,0 +1,17 @@
+<mat-tab-group>
+  <mat-tab label="Trades' Table">
+    <ng-template matTabContent>
+    <app-table></app-table>
+  </ng-template>
+  </mat-tab>
+  <mat-tab label="Balance Chart">
+    <ng-template matTabContent>
+      <app-chart></app-chart>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<div class="loader-wrapper" *ngIf="isLoading$ | async">
+  <mat-spinner class="loader"></mat-spinner>
+</div>
+

@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>{{viewMode === ViewModeEnum.CreateMode ? 'Add' : 'Edit' }} trade </h2>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="tradeForm">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field>
+                        <input formControlName="entryDate" matInput [matDatepicker]="picker1"
+                            datePickerFormat="DD/MM/YYYY" placeholder="Entry Date mm/dd/yyyy"
+                            [max]="moment()">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input formControlName="exitDate" matInput [matDatepicker]="picker2"
+                            placeholder="Exit Date mm/dd/yyyy" datePickerFormat="DD/MM/YYYY"
+                            [min]="tradeForm.get('entryDate')?.value" [max]="moment()">
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-error *ngIf="tradeForm.get('exitDate')?.hasError('matDatepickerMin')">
+                            Entry date should be less or equal to
+                            exit date.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <mat-form-field>
+                        <input formControlName="entryPrice" matInput placeholder="Entry Price" type="number" min="1">
+                        <mat-error>This field is mandatory.</mat-error>
+                        <mat-error *ngIf="tradeForm.get('entryPrice')?.hasError('pattern')">
+                            Entry price can be positive numbers only.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-form-field>
+                        <input formControlName="exitPrice" matInput placeholder="Exit Price" type="number" min="1">
+                        <mat-error> This field is mandatory. </mat-error>
+                        <mat-error *ngIf="tradeForm.get('exitPrice')?.hasError('pattern')">
+                            Exit price can be positive numbers only.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button (click)="onSave(tradeForm.value)" [disabled]="tradeForm.invalid"
+        [mat-dialog-close]="tradeForm.value" cdkFocusInitial>
+        {{viewMode === ViewModeEnum.EditMode ? 'Save' : 'Submit' }}
+    </button>
+</mat-dialog-actions>
